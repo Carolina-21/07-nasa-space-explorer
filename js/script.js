@@ -2,25 +2,24 @@
 const startInput = document.getElementById("startDate");
 const endInput = document.getElementById("endDate");
 
-// Call the setupDateInputs function from dateRange.js
-// This sets up the date pickers to:
-// - Default to a range of 9 days
-// - Restrict dates to NASA's APOD archive
+// Set up the valid NASA APOD date range
 setupDateInputs(startInput, endInput);
 
 // ================================
 // NASA APOD Gallery
 // ================================
 
-// NASA API information
-const API_KEY = "aHVRKuevVgJWcOaN0YN3p3RRVWJio1TjaEUbf8Fn";
+const API_KEY = "YOUR_NASA_API_KEY";
 const API_URL = "https://api.nasa.gov/planetary/apod";
 
-// Get the remaining elements from the HTML
+// Get elements from the HTML
 const getImagesButton = document.getElementById("get-images");
 const gallery = document.getElementById("gallery");
 
-// Random space facts
+// ================================
+// Random Space Facts
+// ================================
+
 const spaceFacts = [
   "A day on Venus is longer than a year on Venus.",
   "The Sun contains more than 99% of the mass in our solar system.",
@@ -34,11 +33,9 @@ const spaceFacts = [
   "Saturn's average density is lower than the density of water."
 ];
 
-// Display a random space fact when the page loads
 function displayRandomFact() {
   const factElement = document.getElementById("space-fact");
 
-  // Stop the function if the HTML does not contain a space-fact element
   if (!factElement) {
     return;
   }
@@ -56,37 +53,6 @@ displayRandomFact();
 // ================================
 
 async function getSpaceImages() {
-  // Get the selected dates
-  const startDate = startInput.value;
-  const endDate = endInput.value;
-
-  // Make sure both dates were selected
-  if (!startDate || !endDate) {
-    gallery.innerHTML = `
-      <p class="error-message">
-        Please select both a start date and an end date.
-      </p>
-    `;
-    return;
-  }
-
-  // Show loading message while waiting for NASA
-  gallery.innerHTML = `
-    <p class="loading-message">
-      🔄 Loading space photos...
-    </p>
-  `;
-
-  // Build NASA APOD API URL
-  const API_KEY = "YOUR_API_KEY_HERE";
-const API_URL = "https://api.nasa.gov/planetary/apod";
-
-const startInput = document.getElementById("startDate");
-const endInput = document.getElementById("endDate");
-const getImagesButton = document.getElementById("get-images");
-const gallery = document.getElementById("gallery");
-
-async function getSpaceImages() {
   const startDate = startInput.value;
   const endDate = endInput.value;
 
@@ -99,12 +65,14 @@ async function getSpaceImages() {
     return;
   }
 
+  // Show loading message
   gallery.innerHTML = `
     <p class="loading-message">
       🔄 Loading space photos...
     </p>
   `;
 
+  // Build NASA API request
   const url =
     `${API_URL}?api_key=${API_KEY}` +
     `&start_date=${startDate}` +
@@ -135,14 +103,212 @@ async function getSpaceImages() {
       <p class="error-message">
         🚀 Houston, we have a problem!
         Unable to load the space images.
+        Please try again.
       </p>
     `;
   }
 }
 
-getImagesButton.addEventListener("click", getSpaceImages);
+// ================================
+// Display Gallery
+// ================================
 
+function displayGallery(data) {
+  gallery.innerHTML = "";
 
+  if (!Array.isArray(data) || data.length === 0) {
+    gallery.innerHTML = `
+      <p>No space images were found for this date range.</p>
+    `;
+    return;
+  }
 
+  data.forEach((item) => {
+    const galleryItem = document.createElement("article");
 
+    galleryItem.classList.add("gallery-item");
 
+    // Image entries
+    if (item.media_type === "image") {
+      galleryItem.innerHTML = `
+        <img
+          src="${item.url}"
+          alt="${item.title}"
+          class="gallery-image"
+          loading="lazy"
+        >
+
+        <div class="gallery-info">
+          <h2>${item.title}</h2>
+          <p>${formatDate(item.date)}</p>
+        </div>
+      `;
+
+      galleryItem.addEventListener("click", () => {
+        openModal(item);
+      });
+    }
+
+    // Video entries
+    else if (item.media_type === "video") {
+      const previewImage =
+        item.thumbnail_url ||
+        "https://images-assets.nasa.gov/image/PIA12348/PIA12348~medium.jpg";
+
+      galleryItem.innerHTML = `
+        <div class="video-preview">
+
+          <img
+            src="${previewImage}"
+            alt="Video preview for ${item.title}"
+            class="gallery-image"
+            loading="lazy"
+          >
+
+          <div class="video-icon">
+            ▶
+          </div>
+
+        </div>
+
+        <div class="gallery-info">
+
+          <h2>${item.title}</h2>
+
+          <p>
+            ${formatDate(item.date)}
+          </p>
+
+          <span class="video-label">
+            🎥 NASA Video
+          </span>
+
+        </div>
+      `;
+
+      galleryItem.addEventListener("click", () => {
+        openModal(item);
+      });
+    }
+
+    gallery.appendChild(galleryItem);
+  });
+}
+
+// ================================
+// Modal
+// ================================
+
+function openModal(item) {
+  const modal = document.createElement("div");
+
+  modal.classList.add("modal");
+
+  let mediaContent = "";
+
+  if (item.media_type === "image") {
+    const largeImage = item.hdurl || item.url;
+
+    mediaContent = `
+      <img
+        src="${largeImage}"
+        alt="${item.title}"
+        class="modal-image"
+      >
+    `;
+  } else {
+    mediaContent = `
+      <div class="video-container">
+
+        <iframe
+          src="${item.url}"
+          title="${item.title}"
+          allowfullscreen>
+        </iframe>
+
+      </div>
+
+      <a
+        href="${item.url}"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="video-link"
+      >
+        Watch NASA Video ↗
+      </a>
+    `;
+  }
+
+  modal.innerHTML = `
+    <div class="modal-content">
+
+      <button
+        class="close-modal"
+        aria-label="Close modal"
+      >
+        &times;
+      </button>
+
+      ${mediaContent}
+
+      <div class="modal-text">
+
+        <h2>
+          ${item.title}
+        </h2>
+
+        <p class="modal-date">
+          ${formatDate(item.date)}
+        </p>
+
+        <p class="modal-explanation">
+          ${item.explanation}
+        </p>
+
+      </div>
+
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  const closeButton =
+    modal.querySelector(".close-modal");
+
+  closeButton.addEventListener("click", () => {
+    modal.remove();
+  });
+
+  modal.addEventListener("click", (event) => {
+    if (event.target === modal) {
+      modal.remove();
+    }
+  });
+}
+
+// ================================
+// Date Formatting
+// ================================
+
+function formatDate(dateString) {
+  const date =
+    new Date(`${dateString}T00:00:00`);
+
+  return date.toLocaleDateString(
+    "en-US",
+    {
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    }
+  );
+}
+
+// ================================
+// Button Event
+// ================================
+
+getImagesButton.addEventListener(
+  "click",
+  getSpaceImages
+);
