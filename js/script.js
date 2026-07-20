@@ -9,7 +9,7 @@ setupDateInputs(startInput, endInput);
 // NASA APOD Gallery
 // ================================
 
-const API_KEY = "aHVRKuevVgJWcOaN0YN3p3RRVWJio1TjaEUbf8Fn";
+const API_KEY = "BJFQZoCSxMOxRr7wPZhVz9eAYkGqUUo0TOh9AOcT";
 const API_URL = "https://api.nasa.gov/planetary/apod";
 
 // Get elements from the HTML
