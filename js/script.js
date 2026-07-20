@@ -13,7 +13,7 @@ setupDateInputs(startInput, endInput);
 // ================================
 
 // NASA API information
-const API_KEY = "YOUR_NASA_API_KEY";
+const API_KEY = "aHVRKuevVgJWcOaN0YN3p3RRVWJio1TjaEUbf8Fn";
 const API_URL = "https://api.nasa.gov/planetary/apod";
 
 // Get the remaining elements from the HTML
