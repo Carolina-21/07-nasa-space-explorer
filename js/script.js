@@ -78,25 +78,54 @@ async function getSpaceImages() {
   `;
 
   // Build NASA APOD API URL
+  const API_KEY = "YOUR_API_KEY_HERE";
+const API_URL = "https://api.nasa.gov/planetary/apod";
+
+const startInput = document.getElementById("startDate");
+const endInput = document.getElementById("endDate");
+const getImagesButton = document.getElementById("get-images");
+const gallery = document.getElementById("gallery");
+
+async function getSpaceImages() {
+  const startDate = startInput.value;
+  const endDate = endInput.value;
+
+  if (!startDate || !endDate) {
+    gallery.innerHTML = `
+      <p class="error-message">
+        Please select both a start date and an end date.
+      </p>
+    `;
+    return;
+  }
+
+  gallery.innerHTML = `
+    <p class="loading-message">
+      🔄 Loading space photos...
+    </p>
+  `;
+
   const url =
     `${API_URL}?api_key=${API_KEY}` +
     `&start_date=${startDate}` +
     `&end_date=${endDate}` +
     `&thumbs=true`;
 
+  console.log("NASA request URL:", url);
+
   try {
-    // Send request to NASA
     const response = await fetch(url);
 
-    // Check for an unsuccessful response
+    console.log("NASA response:", response);
+
     if (!response.ok) {
       throw new Error(`NASA API error: ${response.status}`);
     }
 
-    // Convert NASA's response into JavaScript data
     const data = await response.json();
 
-    // Send the data to the gallery function
+    console.log("NASA data:", data);
+
     displayGallery(data);
 
   } catch (error) {
@@ -105,10 +134,15 @@ async function getSpaceImages() {
     gallery.innerHTML = `
       <p class="error-message">
         🚀 Houston, we have a problem!
-        Unable to load the space images. Please try again.
+        Unable to load the space images.
       </p>
     `;
   }
-  const getImagesButton = document.getElementById("get-images");
-  getImagesButton.addEventListener("click", getSpaceImages);
 }
+
+getImagesButton.addEventListener("click", getSpaceImages);
+
+
+
+
+
