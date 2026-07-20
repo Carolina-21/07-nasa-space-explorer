@@ -142,3 +142,295 @@ button:hover {
   font-size: 48px;
   margin-bottom: 20px;
 }
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Public+Sans:wght@400;500;600&display=swap");
+
+body {
+  margin: 0;
+  background: #050816;
+  color: #ffffff;
+  font-family: "Public Sans", Arial, sans-serif;
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Inter", Arial, sans-serif;
+}
+
+/* Random Fact */
+
+.fact-section {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 20px;
+  text-align: center;
+  background: #0b3d91;
+  border-radius: 12px;
+}
+
+#space-fact {
+  margin: 0;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+
+/* Gallery */
+
+.gallery {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px;
+
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fit, minmax(250px, 1fr));
+
+  gap: 24px;
+}
+
+.gallery-item {
+  background: #111827;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.35);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.gallery-item:hover {
+  transform: translateY(-6px);
+
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.5);
+}
+
+.gallery-image {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+
+  /* EXTRA CREDIT: Hover Zoom */
+  transition: transform 0.4s ease;
+}
+
+.gallery-item:hover .gallery-image {
+  transform: scale(1.07);
+}
+
+.gallery-info {
+  padding: 18px;
+}
+
+.gallery-info h2 {
+  margin-top: 0;
+  font-size: 1.15rem;
+}
+
+.gallery-info p {
+  color: #d1d5db;
+}
+
+
+/* Video */
+
+.video-preview {
+  position: relative;
+  overflow: hidden;
+}
+
+.video-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  width: 60px;
+  height: 60px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 50%;
+
+  background: rgba(0, 0, 0, 0.75);
+
+  font-size: 28px;
+}
+
+.video-label {
+  display: inline-block;
+  margin-top: 5px;
+  font-size: 0.85rem;
+  color: #ffffff;
+}
+
+
+/* Loading and Errors */
+
+.loading-message,
+.error-message {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-size: 1.2rem;
+  padding: 40px;
+}
+
+.error-message {
+  color: #ff6b6b;
+}
+
+
+/* Modal */
+
+.modal {
+  position: fixed;
+  inset: 0;
+
+  z-index: 1000;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 20px;
+
+  background:
+    rgba(0, 0, 0, 0.88);
+
+  overflow-y: auto;
+}
+
+.modal-content {
+  position: relative;
+
+  width: 100%;
+  max-width: 900px;
+
+  max-height: 90vh;
+  overflow-y: auto;
+
+  background: #111827;
+
+  border-radius: 16px;
+
+  padding: 25px;
+
+  box-sizing: border-box;
+}
+
+.close-modal {
+  position: absolute;
+  top: 10px;
+  right: 18px;
+
+  z-index: 2;
+
+  border: none;
+  background: transparent;
+
+  color: white;
+
+  font-size: 40px;
+
+  cursor: pointer;
+}
+
+.modal-image {
+  display: block;
+
+  max-width: 100%;
+  max-height: 60vh;
+
+  margin: 0 auto 25px;
+
+  border-radius: 10px;
+
+  object-fit: contain;
+}
+
+.modal-text {
+  line-height: 1.7;
+}
+
+.modal-text h2 {
+  padding-right: 40px;
+}
+
+.modal-date {
+  color: #9ca3af;
+  font-weight: 600;
+}
+
+.modal-explanation {
+  color: #e5e7eb;
+}
+
+
+/* Video Modal */
+
+.video-container {
+  position: relative;
+
+  width: 100%;
+
+  padding-bottom: 56.25%;
+
+  height: 0;
+
+  overflow: hidden;
+
+  border-radius: 10px;
+}
+
+.video-container iframe {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  border: 0;
+}
+
+.video-link {
+  display: inline-block;
+
+  margin: 15px 0;
+
+  color: #ffffff;
+
+  font-weight: 600;
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+  .gallery {
+    grid-template-columns: 1fr;
+  }
+
+  .modal {
+    padding: 10px;
+  }
+
+  .modal-content {
+    padding: 18px;
+  }
+
+  .gallery-image {
+    height: 220px;
+  }
+}
