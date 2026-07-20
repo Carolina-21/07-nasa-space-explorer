@@ -109,5 +109,6 @@ async function getSpaceImages() {
       </p>
     `;
   }
+  const getImagesButton = document.getElementById("get-images");
   getImagesButton.addEventListener("click", getSpaceImages);
 }
